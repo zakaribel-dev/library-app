@@ -5,11 +5,10 @@ import { Suspense, lazy } from "react";
 import Header from "./components/Header";
 import Spinner from "./components/Spinner";
 
-// Lazy-loaded pages
-const HomePage = lazy(() => import("./pages/HomePage"));
-const SearchPage = lazy(() => import("./pages/SearchPage"));
-const BookPage = lazy(() => import("./pages/BookDetailsPage"));
-const AdvancedSearchPage = lazy(() => import("./pages/AdvancedSearchPage"));
+const HomePage = lazy(() => import("./features/home/HomePage"));
+const SearchPage = lazy(() => import("./features/search/SearchPage"));
+const BookDetailsPage = lazy(() => import("./features/book/BookDetailsPage"));
+const AdvancedSearchPage = lazy(() => import("./features/advancedSearch/AdvancedSearchPage"));
 
 const queryClient = new QueryClient();
 
@@ -22,7 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/book/:id" element={<BookPage />} />
+            <Route path="/book/:type/:id" element={<BookDetailsPage />} />
             <Route path="/advanced-search" element={<AdvancedSearchPage />} />
           </Routes>
         </Suspense>

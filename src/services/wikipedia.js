@@ -4,15 +4,16 @@ export const fetchWikipediaData = async (title) => {
   try {
     const res = await axios.get("https://en.wikipedia.org/w/api.php", {
       params: {
-        action: "query",
+        action: "query", // on precise qu'on veut faire une query (y a moyen de faire d'autres action au niveau de l'api comme edit par exempl)
         format: "json",
-        origin: "*",
-        prop: "extracts|pageimages",
-        exintro: true,
-        explaintext: true,
-        piprop: "thumbnail",
-        pithumbsize: 400,
-        titles: title,
+        origin: "*",// cors
+        prop: "extracts|pageimages", //extracts comme son nom l'indique : on veut juste recup des extraits textuel + les images (pageimages) du wiki
+        // https://www.mediawiki.org/wiki/Extension:PageImages   séparation des props avec "|"
+        exintro: true, //  // je souhaite des extracts du premier paragraphe (intro)
+        explaintext: true,  //// return du texte pur pas du html
+        piprop: "thumbnail", // j'veux l'image du thumbnail uniqument 
+        pithumbsize: 400, // taille max du thumbnail
+        titles: title, 
       },
     });
 

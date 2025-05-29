@@ -1,73 +1,95 @@
 import axios from "axios";
 
-const extractId = (key, type) =>
-  key?.startsWith(`/${type}/`) ? key.split(`/${type}/`)[1] : null;
 
+
+// OpenLibrary retourne parfois des "books" et parfois des "works"
+// - "work" = une œuvre abstraite (ex: *Le Petit Prince*), identifiée par OLxxxxW
+// - "book" = une édition spécifique imprimée (ex: Gallimard 1971), identifiée par OLxxxxM
+// Cela dépend de l'API utilisée (ex: search.json → work / recentchanges.json → book ou work)
+// Il faut donc toujours extraire à la fois l'id et le type pour construire l'URL correcte :
+//    https://openlibrary.org/works/OLxxxW.json    ← pour un work
+//    https://openlibrary.org/books/OLxxxM.json    ← pour un book
+
+
+
+
+
+
+// extrait l'id de la key comme "/books/OL12345M" par exemple donc ce qui est xtrait -> "OL12345M"
+const extractId = (key) => {
+  if (key.startsWith("/books/")) {
+    return { type: "book", id: key.split("/books/")[1] };
+  }
+  if (key.startsWith("/works/")) {
+    return { type: "work", id: key.split("/works/")[1] };
+  }
+  return null;
+};
+
+// recup des derniers changements OpenLibrary
 export const fetchRecentChanges = async (limit = 10) => {
-  const res = await axios.get(`https://openlibrary.org/recentchanges.json?limit=200`);
-  const changes = res.data;
+  try {
+    const res = await axios.get(
+      "https://openlibrary.org/recentchanges.json?limit=200"
+    );
+    const allChanges = res.data;
+    const results = [];
 
-  const targets = changes
-    .map((entry) => {
-      const change = entry.changes.find((c) =>
-        c.key?.startsWith("/books/") || c.key?.startsWith("/works/")
+    for (const entry of allChanges) { // for car avec un promise.all jepeux pas couper la boucle aune fois la limit atteinte
+      const change = entry.changes.find(
+        (c) => c.key?.startsWith("/books/") || c.key?.startsWith("/works/")
       );
-      if (!change) return null;
 
-      const isBook = change.key.startsWith("/books/");
-      const id = extractId(change.key, isBook ? "books" : "works");
+      if (!change) continue;
 
-      return {
-        type: isBook ? "book" : "work",
-        id,
-        timestamp: entry.timestamp,
-      };
-    })
-    .filter(Boolean); // on dégage les results null
+      const parsed = extractId(change.key);
+      if (!parsed) continue;
 
-  const results = await Promise.all(
-    targets.map(async ({ type, id, timestamp }) => {
+      const { type, id } = parsed;
+
       try {
-        const url = `https://openlibrary.org/${type}s/${id}.json`;
-        const res = await axios.get(url);
-        const data = res.data;
+        const detailRes = await axios.get(
+          `https://openlibrary.org/${type}s/${id}.json`
+        );
+        const detail = detailRes.data;
 
-        const workId =
-          type === "book"
-            ? data.works?.[0]?.key?.split("/works/")[1]
-            : id;
-
-        const title = data.title;
-        const coverId = data.covers?.[0] || null;
-
-        return {
-          workId,
+        const title = detail.title;
+        const coverId = detail.covers?.[0];
+        results.push({
           title,
           coverId,
-          timestamp,
-        };
+          workId: id,
+          timestamp: entry.timestamp,
+          type,
+        });
       } catch {
-        return null;
+        continue;
       }
-    })
-  );
 
-  return results.filter(Boolean).slice(0, limit);
+      if (results.length >= limit) break;
+    }
+
+    return results;
+  } catch (err) {
+    console.error("erreur fetchRecentChanges :", err);
+    return [];
+  }
 };
 
 
-
-
-export const fetchWorkById = async (id) => {
-  const res = await axios.get(`https://openlibrary.org/works/${id}.json`);
+export const fetchWorkById = async (id,type) => {
+  const res = await axios.get(`https://openlibrary.org/${type}s/${id}.json`)
   return res.data;
 };
 
 // recup les noms  d'authors à partir d'un tableau d'authors
 export const fetchAuthorsFromWorkObject = async (authors = []) => {
   const names = await Promise.all(
+    // promise.all plus performant qu'une boucle for car les calls se font en paralèle au lieu de faire un par un
     authors.map(async (a) => {
-      const res = await axios.get(`https://openlibrary.org${a.author.key}.json`);
+      const res = await axios.get(
+        `https://openlibrary.org${a.author.key}.json`
+      );
       return res.data.name;
     })
   );
@@ -86,7 +108,9 @@ export const searchBooks = async ({ title, author, subject }) => {
 
 export const searchBooksByQuery = async (query) => {
   const res = await axios.get(
-    `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=10`
+    `https://openlibrary.org/search.json?q=${encodeURIComponent(
+      query
+    )}&limit=10`
   );
   return res.data.docs;
 };

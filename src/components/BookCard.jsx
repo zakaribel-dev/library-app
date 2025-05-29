@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
 import React from "react";
 
-const BookCard = ({ title, author_name, coverId, workId, first_publish_year }) => {
+const BookCard = ({ title, author_name, coverId, workId, first_publish_year,type }) => {
   const [imageLoading, setImageLoading] = useState(true);
 
   const imageUrl = useMemo(() => {
@@ -12,7 +12,7 @@ const BookCard = ({ title, author_name, coverId, workId, first_publish_year }) =
   return (
     <div className="border border-gray-300 rounded-xl p-4 w-64 shadow hover:shadow-md transition relative">
       <h3 className="text-lg font-semibold mb-2">
-        <Link to={`/book/${workId}`} className="text-blue-600 hover:underline">
+        <Link to={`/book/${type}/${workId}`} className="text-blue-600 hover:underline">
           {title}
         </Link>
       </h3>
