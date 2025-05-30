@@ -28,16 +28,22 @@ Ce projet est une interface web pour la bibliothèque municipale, réalisée en 
 
 ##  Installation
 
-```bash
+
 # Cloner le projet
+```bash
 git clone https://github.com/zakaribel-dev/library-app
+```
+
 
 # Installer les dépendances
+```bash
 npm install
-
+```
 # Lancer en développement
+```bash
 npm run dev
-
+```
 # Testing
+```bash
 npx vitest run
-
+```
