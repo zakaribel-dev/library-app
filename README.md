@@ -37,3 +37,7 @@ npm install
 
 # Lancer en développement
 npm run dev
+
+# Testing
+npx vitest run
+
