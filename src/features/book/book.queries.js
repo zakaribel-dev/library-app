@@ -5,8 +5,10 @@ import {
 } from "../../services/openLibrary";
 import { fetchWikipediaData } from "../../services/wikipedia";
 
+
+//https://tanstack.com/query/v4/docs/framework/react/reference/useQuery
 export const useBook = (id, type) =>
-  useQuery({
+  useQuery({ 
     queryKey: ["book", type, id],
     queryFn: () => fetchWorkById(id,type),
     staleTime: 1000 * 60 * 5, // cache 5 mn
