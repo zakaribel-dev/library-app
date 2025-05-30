@@ -11,8 +11,6 @@ export const fetchWikipediaData = async (title) => {
         // https://www.mediawiki.org/wiki/Extension:PageImages   séparation des props avec "|"
         exintro: true, //  // je souhaite des extracts du premier paragraphe (intro)
         explaintext: true,  //// return du texte pur pas du html
-        piprop: "thumbnail", // j'veux l'image du thumbnail uniqument 
-        pithumbsize: 400, // taille max du thumbnail
         titles: title, 
       },
     });
