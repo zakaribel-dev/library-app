@@ -21,7 +21,7 @@ describe("Header", () => {
       </MemoryRouter>
     );
 
-    const input = screen.getByPlaceholderText("Recherche rapide...");
+    const input = screen.getByPlaceholderText("Quel livre ?");
     fireEvent.change(input, { target: { value: "Moby Dick" } });
 
     expect(input.value).toBe("Moby Dick");

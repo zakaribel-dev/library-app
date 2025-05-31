@@ -6,6 +6,7 @@ import BookWikiInfo from "./BookWikiInfo";
 const BookDetailsPage = () => {
 const { id, type } = useParams();
 
+
   const {
     data: book,
     isLoading: isBookLoading,
@@ -26,6 +27,10 @@ const { id, type } = useParams();
   if (isBookLoading) return <p className="text-center text-gray-500">Chargement du livre...</p>;
   if (bookError) return <p className="text-center text-red-600">Erreur de chargement</p>;
   if (!book) return null;
+  const validTypes = ["book", "work"]; // je veux eviter que dans l'url on fournisse autre chose qu'un book ou un work 
+  if (!validTypes.includes(type))  return <p className="text-red-500 text-center mt-10">Type de ressource invalide dans l'url.</p>;
+
+
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-10">

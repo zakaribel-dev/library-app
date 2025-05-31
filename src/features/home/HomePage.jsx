@@ -3,7 +3,7 @@ import BookCard from "../../components/BookCard";
 import Spinner from "../../components/Spinner";
 
 const HomePage = () => {
-  const { data: books, isLoading, error } = useRecentChanges(10);
+  const { data: books, isLoading, error } = useRecentChanges(12);
 
   if (isLoading) return <Spinner />;
   if (error) return <p>Erreur lors du chargement.</p>;

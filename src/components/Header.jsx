@@ -22,7 +22,7 @@ const Header = () => {
             <form onSubmit={handleSearch} className="flex gap-2 w-full sm:w-auto">
                 <input
                     type="text"
-                    placeholder="Recherche rapide..."
+                    placeholder="Quel livre ?"
                     className="border rounded-md px-3 py-1 w-full sm:w-64"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
