@@ -9,7 +9,7 @@ Ce projet est une interface web pour la bibliothèque municipale, réalisée en 
 -  **Recherche rapide** (dans le header) accessible depuis toutes les pages
 -  **Recherche avancée** (par auteur, date, sujet, etc.)
 -  Affichage des **changements récents** (page d’accueil)
--  Détail d’unn **livre** (titre, couverture, année, auteur, etc.)
+-  Détail d’un **livre** (titre, couverture, année, auteur, etc.)
 -  Intégration d’un résumé Wikipedia pour chaque livre
 -  Application responsive & accessible
 
