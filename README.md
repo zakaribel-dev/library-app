@@ -17,7 +17,7 @@ Ce projet est une interface web pour la bibliothèque municipale, réalisée en 
 
 ##  Stack technique
 
-- **React 19** 
+- **React** 
 - **Vite** pour le bundling et le dev server
 - **Tailwind CSS** pour le style
 - **React Query** pour la gestion des requêtes API
