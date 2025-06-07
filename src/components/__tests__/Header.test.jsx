@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import Header from "../Header";
 
 describe("Header", () => {
@@ -10,7 +10,7 @@ describe("Header", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText("Accueil")).toBeInTheDocument();
+    expect(screen.getByText("Accueil")).toBeInTheDocument(); // verifs que les links que Header nous provide sont bien render dans le DOM
     expect(screen.getByText("Recherche avancée")).toBeInTheDocument();
   });
 
@@ -21,9 +21,9 @@ describe("Header", () => {
       </MemoryRouter>
     );
 
-    const input = screen.getByPlaceholderText("Quel livre ?");
-    fireEvent.change(input, { target: { value: "Moby Dick" } });
+    const input = screen.getByPlaceholderText("Quel livre ?"); // test de l'input..
+    fireEvent.change(input, { target: { value: "Harry Potter" } });
 
-    expect(input.value).toBe("Moby Dick");
+    expect(input.value).toBe("Harry Potter"); // val bien maj ?
   });
 });

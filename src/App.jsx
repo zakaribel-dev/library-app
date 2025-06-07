@@ -14,7 +14,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}> 
       <Router>
         <Header />
         <Suspense fallback={<div className="flex justify-center py-10"><Spinner /></div>}>
