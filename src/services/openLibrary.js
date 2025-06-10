@@ -112,7 +112,7 @@ export const searchBooks = async ({ title, author, subject }) => { // recherche 
   return res.data.docs;
 };
 
-export const searchBooksByQuery = async (query) => { // recherche rapide
+export const searchBooksByQuery = async (query, limit) => { // recherche rapide
   const res = await axios.get(
     `https://openlibrary.org/search.json?q=${encodeURIComponent(
       query
