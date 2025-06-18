@@ -6,5 +6,6 @@ export const useBookSearch = (form, enabled = false) =>
     queryKey: ["searchBooks", form],
     queryFn: () => searchBooks(form),
     enabled,
-    staleTime: 1000 * 60 * 5,
+  cacheTime: 0,      // ← supprime le cache après utilisation
+  staleTime: 0  
   });

@@ -6,5 +6,6 @@ export const useSearchByQuery = (query) =>
     queryKey: ["searchBooks", query],
     queryFn: () => searchBooksByQuery(query, 10),
     enabled: !!query,// on lance searchBooksByQuery que si on a une query définie.. et non automatiquement
-    staleTime: 1000 * 60 * 5,
+     cacheTime: 0,      // ← supprime le cache après utilisation
+  staleTime: 0  
   });

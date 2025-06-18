@@ -85,6 +85,7 @@ export const fetchRecentChanges = async (limit = 10) => {
 
 export const fetchWorkById = async (id,type) => { // tout simplement un call pour récup les infos d'un book ou work par son id
   const res = await axios.get(`https://openlibrary.org/${type}s/${id}.json`)
+  console.log("fetchWorkById res.data :", res.data);
   return res.data;
 };
 
@@ -96,6 +97,7 @@ export const fetchAuthorsFromWorkObject = async (authors = []) => {
       const res = await axios.get(
         `https://openlibrary.org${a.author.key}.json`
       );
+      console.log("fetchAuthorsFromWorkObject res.data :", res.data);
       return res.data.name;
     })
   );
@@ -109,6 +111,7 @@ export const searchBooks = async ({ title, author, subject }) => { // recherche 
   if (subject) params.append("subject", subject);
 
   const res = await axios.get(`https://openlibrary.org/search.json?${params}`);
+  console.log("searchBooks res.data.docs :", res.data.docs);
   return res.data.docs;
 };
 
@@ -118,5 +121,7 @@ export const searchBooksByQuery = async (query, limit) => { // recherche rapide
       query
     )}&limit=10`
   );
+
+  console.log("searchBooksByQuery res.data.docs :", res.data.docs);
   return res.data.docs;
 };
